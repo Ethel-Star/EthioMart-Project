@@ -31,7 +31,7 @@ async def main():
         
         # List of channels to scrape
         channels = [
-            '@ZemenExpress'
+            '@ZemenExpress',
         ]
         
         # Iterate over channels and scrape data into the CSV file
