@@ -13,7 +13,7 @@ phone = os.getenv('TG_PHONE')  # Your phone number
 async def scrape_channel(client, channel_username, writer):
     entity = await client.get_entity(channel_username)
     channel_title = entity.title  # Extract the channel's title
-    async for message in client.iter_messages(entity, limit=6000):  # Limit set to 6000 messages
+    async for message in client.iter_messages(entity, limit=10000):  # Limit set to 6000 messages
         # Write the channel title along with other data
         writer.writerow([channel_title, channel_username, message.id, message.message, message.date])
         print(f"Scraped message ID {message.id} from {channel_title}")
@@ -31,11 +31,7 @@ async def main():
         
         # List of channels to scrape
         channels = [
-            '@ZemenExpress',
-            '@sinayelj',
-            '@modernshoppingcenter',
-            '@Shewabrand',
-            '@helloomarketethiopia'
+            '@ZemenExpress'
         ]
         
         # Iterate over channels and scrape data into the CSV file

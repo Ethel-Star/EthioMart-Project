@@ -1,5 +1,3 @@
-# data_preprocessing.py
-
 import pandas as pd
 import re
 
@@ -19,12 +17,22 @@ def preprocess_telegram_data(file_path):
     def clean_message(text):
         if pd.isnull(text):
             return text
-        # Remove emojis and special characters, keeping only Amharic, English text, and numbers
-        text = re.sub(r'[^\w\s፩-፺ጀ-ፀa-zA-Z0-9]', '', text)  # Updated character range
+        # Remove emojis and special characters, keeping only Amharic characters, numbers, and non-English text
+        text = re.sub(r'[^\w\s፩-፺ጀ-ፀ0-9]', '', text)  # Updated character range to exclude special characters
         return text.strip()
 
-    # Clean the 'Message' column and create a new column for cleaned messages
+    # Function to remove English words from a message
+    def remove_english_words(text):
+        if pd.isnull(text):
+            return text
+        # Remove all English words (a-z, A-Z) but keep other languages like Amharic and numbers
+        return re.sub(r'[a-zA-Z]+', '', text).strip()
+
+    # Clean the 'Message' column by removing special characters
     df['Cleaned_Message'] = df['Message'].apply(clean_message)
+
+    # Remove English words from the 'Cleaned_Message' column
+    df['Cleaned_Message'] = df['Cleaned_Message'].apply(remove_english_words)
 
     # Tokenize the cleaned message (split into words)
     df['Tokens'] = df['Cleaned_Message'].apply(lambda x: x.split() if pd.notnull(x) else [])
